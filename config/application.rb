@@ -1,7 +1,10 @@
 require_relative "boot"
 require File.expand_path("../app/middleware/api_error_handler", __dir__)
 
-require "rails/all"
+require "active_model/railtie"
+require "active_record/railtie"
+require "action_controller/railtie"
+require "rails"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -27,7 +30,15 @@ module RedfishRails
       Rails.root.join("app/serializers")
     ]
 
-    # config.middleware.use ApiErrorHandler
+    config.middleware.use ApiErrorHandler
+
+    config.generators do |g|
+      g.assets false
+      g.helper false
+      g.javascripts false
+      g.stylesheets false
+      g.system_tests false
+    end
 
     # Configuration for the application, engines, and railties goes here.
     #
