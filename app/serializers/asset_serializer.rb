@@ -58,17 +58,17 @@ class AssetSerializer
     current = data
 
     parts.each do |part|
+      return nil if current.nil?
+
       if part =~ /^(.+)\[(\d+)\]$/
         key = $1
         index = $2.to_i
 
         current = current[key]
-        current = current[index]
+        current = current[index] if current
       else
         current = current[part]
       end
-
-      return nil if current.nil?
     end
 
     current

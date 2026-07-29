@@ -4,6 +4,7 @@ class ApplicationController < ActionController::API
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   rescue_from ActiveRecord::RecordInvalid, with: :validation_error
   rescue_from ActiveRecord::RecordNotUnique, with: :conflict_error
+  rescue_from ActionDispatch::Http::Parameters::ParseError, with: :invalid_json
 
   private
 
@@ -19,6 +20,7 @@ class ApplicationController < ActionController::API
 
   def validation_error(exception)
     Rails.logger.info("Validation Error: #{exception.message}")
+
     render_error(
       error: "INVALID_REQUEST",
       message: "One or more request fields are invalid.",
@@ -27,8 +29,19 @@ class ApplicationController < ActionController::API
     )
   end
 
+  def invalid_json(exception)
+    Rails.logger.info("Invalid JSON: #{exception.message}")
+
+    render_error(
+      error: "INVALID_REQUEST",
+      message: "One or more request fields are invalid.",
+      status: :bad_request
+    )
+  end
+
   def conflict_error(exception)
     Rails.logger.info("Conflict Error: #{exception.message}")
+
     render_error(
       error: "CONFLICT",
       message: "A resource already exists.",

@@ -52,7 +52,7 @@ class AssetsController < ApplicationController
       )
     end
 
-    render json: serialize_asset(asset),
+    render json: AssetSerializer.new(asset).as_json,
           status: :created
   end
 
@@ -65,7 +65,7 @@ class AssetsController < ApplicationController
       UploadDate: Time.now
     )
 
-    render json: serialize_asset(asset)
+    render json: AssetSerializer.new(asset, history).as_json
   end
 
   def update
@@ -75,7 +75,7 @@ class AssetsController < ApplicationController
       asset.update!(asset_update_params)
     end
 
-    render json: serialize_asset(asset)
+    render json: AssetSerializer.new(asset).as_json
   end
 
   def destroy

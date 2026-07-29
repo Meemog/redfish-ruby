@@ -27,7 +27,7 @@ module RedfishRails
       Rails.root.join("app/serializers")
     ]
 
-    config.middleware.use ApiErrorHandler
+    # config.middleware.use ApiErrorHandler
 
     # Configuration for the application, engines, and railties goes here.
     #
