@@ -41,16 +41,20 @@ class RacksController < ApplicationController
     head :no_content
   end
 
+  def all_assets
+    rack = RackRecord.find(params[:id])
+
+    render json: rack.assets.map { |asset| AssetSerializer.new(asset).as_json }
+  end
+
 
   private
 
 
   def rack_params
-    params.permit(
-      :Name,
-      :Size,
-      :Notes
-    )
+    params.permit(:name, :size, :notes).transform_keys do |key|
+      key.to_s.capitalize
+    end
   end
 
 

@@ -1,13 +1,15 @@
+require "json"
+
 class AssetsController < ApplicationController
   def index
-    render json: Asset.all.map { |asset| serialize_asset(asset) }
+    render json: Asset.all.map { |asset| AssetSerializer.new(asset).as_json }
   end
 
 
   def show
     asset = Asset.find(params[:id])
 
-    render json: serialize_asset(asset)
+    render json: AssetSerializer.new(asset).as_json
   end
 
 
@@ -18,11 +20,11 @@ class AssetsController < ApplicationController
 
     history =
       asset.json_histories
-           .order(UploadDate: :desc)
-           .offset(index)
-           .first
+          .order(UploadDate: :desc)
+          .offset(index)
+          .first
 
-    render json: serialize_asset(asset, history)
+    render json: AssetSerializer.new(asset, history).as_json
   end
 
   def create
@@ -44,7 +46,8 @@ class AssetsController < ApplicationController
       end
 
       asset.json_histories.create!(
-        RawJson: params[:json],
+        RawJson: params[:json][:text],
+        Filename: params[:json][:filename],
         UploadDate: Time.now
       )
     end
@@ -57,7 +60,8 @@ class AssetsController < ApplicationController
     asset = Asset.find(params[:id])
 
     history = asset.json_histories.create!(
-      RawJson: params[:json],
+      RawJson: params[:json][:text],
+      Filename: params[:json][:filename],
       UploadDate: Time.now
     )
 
@@ -69,17 +73,6 @@ class AssetsController < ApplicationController
 
     ActiveRecord::Base.transaction do
       asset.update!(asset_update_params)
-
-      if params[:data]
-        asset.paths.destroy_all
-
-        params[:data].each do |item|
-          asset.paths.create!(
-            Path: item[:path],
-            Name: item[:name]
-          )
-        end
-      end
     end
 
     render json: serialize_asset(asset)
@@ -97,33 +90,6 @@ class AssetsController < ApplicationController
   private
 
 
-  def serialize_asset(asset, json_history = nil)
-    json_history ||= asset.latest_json
-
-    {
-      id: asset.ID,
-      rackId: asset.RackId,
-      name: asset.Name,
-      size: asset.Size,
-      position: asset.Position,
-
-      data: asset.paths.map do |path|
-        {
-          path: path.Path,
-          name: path.Name,
-          value: extract_value(path)
-        }
-      end,
-
-      json: json_history&.RawJson,
-
-      pagination: {
-        position: json_history_position(asset, json_history),
-        total: asset.json_histories.count
-      }
-    }
-  end
-
   def asset_update_params
     params.permit(
       :rackId,
@@ -138,20 +104,5 @@ class AssetsController < ApplicationController
         "position" => "Position"
       }[key]
     end.compact
-  end
-
-
-  def json_history_position(asset, history)
-    return 0 unless history
-
-    asset.json_histories
-         .order(UploadDate: :desc)
-         .pluck(:ID)
-         .index(history.ID)
-  end
-
-
-  def extract_value(path)
-    "CHANGE THIS"
   end
 end

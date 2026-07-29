@@ -1,4 +1,5 @@
 require_relative "boot"
+require File.expand_path("../app/middleware/api_error_handler", __dir__)
 
 require "rails/all"
 
@@ -17,6 +18,16 @@ module RedfishRails
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w[assets tasks])
+
+    config.autoload_paths += [
+      Rails.root.join("app/serializers")
+    ]
+
+    config.eager_load_paths += [
+      Rails.root.join("app/serializers")
+    ]
+
+    config.middleware.use ApiErrorHandler
 
     # Configuration for the application, engines, and railties goes here.
     #
