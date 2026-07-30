@@ -7,6 +7,7 @@ class ApiErrorHandler
     @app.call(env)
   rescue StandardError => e
     Rails.error.report(e)
+    puts e
 
     [
       500,

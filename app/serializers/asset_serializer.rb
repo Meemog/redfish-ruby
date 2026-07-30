@@ -23,10 +23,7 @@ class AssetSerializer
         }
       end,
 
-      json: {
-        text: @json_history&.RawJson,
-        filename: @json_history&.Filename
-      },
+      json: HistorySerializer.call(@json_history),
 
       pagination: {
         position: json_history_position,

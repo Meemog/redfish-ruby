@@ -8,26 +8,35 @@ Rails.application.routes.draw do
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-  resources :assets, only: [ :index, :show, :create, :destroy ] do
-    resources :paths, only: [ :index, :show, :create, :update, :destroy ]
+
+  scope "/api/v1" do
+    resources :assets, only: [ :index, :show, :create, :update, :destroy ] do
+      resources :paths, only: [ :index, :show, :create, :update, :destroy ]
+    end
+
+    get "assets/:id/history",
+    to: "json_histories#index"
+
+    get "assets/:id/history/:history_id",
+        to: "json_histories#show"
+
+    delete "assets/:id/history/:history_id",
+        to: "json_histories#destroy"
+
+    post "assets/:id",
+        to: "assets#create_json",
+        as: :asset_json_history
+
+    get "assets/:id/:index",
+        to: "assets#history",
+        as: :asset_history
+
+    get "racks/:id/assets",
+      to: "racks#all_assets",
+      as: :rack_assets
+
+    resources :racks
   end
-
-  patch "/assets/:id",
-        to: "assets#update"
-
-  post "assets/:id",
-       to: "assets#create_json",
-       as: :asset_json_history
-
-  get "assets/:id/:index",
-      to: "assets#history",
-      as: :asset_history
-
-  get "racks/:id/assets",
-    to: "racks#all_assets",
-    as: :rack_assets
-
-  resources :racks
 
   # Defines the root path route ("/")
   # root "posts#index"
