@@ -1,9 +1,9 @@
 class HistorySerializer
   def self.call(history)
     {
-      text: history.RawJson,
-      filename: history.Filename,
-      id: history.ID
+      text: history.rawJson,
+      filename: history.filename,
+      id: history.id
     }
   end
 

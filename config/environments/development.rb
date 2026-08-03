@@ -13,6 +13,8 @@ Rails.application.configure do
 
   config.action_controller.perform_caching = false
 
+  config.public_file_server.enabled = true
+
   config.cache_store = :memory_store
 
   config.active_support.deprecation = :log

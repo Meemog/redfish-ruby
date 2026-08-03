@@ -35,6 +35,13 @@ Rails.application.routes.draw do
       to: "racks#all_assets",
       as: :rack_assets
 
+    resources :templates, only: [ :index, :show, :create, :update, :destroy ] do
+      resources :template_paths,
+      path: "paths",
+      only: [ :index, :show, :create, :update, :destroy ]
+    end
+
+
     resources :racks
   end
 

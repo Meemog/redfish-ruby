@@ -16,6 +16,8 @@ Rails.application.configure do
 
   config.silence_healthcheck_path = "/up"
 
+  config.public_file_server.enabled = true
+
   config.active_support.report_deprecations = false
 
   config.active_record.dump_schema_after_migration = false

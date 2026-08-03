@@ -52,18 +52,16 @@ class RacksController < ApplicationController
 
 
   def rack_params
-    params.permit(:name, :size, :notes).transform_keys do |key|
-      key.to_s.capitalize
-    end
+    params.permit(:name, :size, :notes)
   end
 
 
   def serialize_rack(rack)
     {
-      id: rack.ID,
-      name: rack.Name,
-      size: rack.Size,
-      notes: rack.Notes
+      id: rack.id,
+      name: rack.name,
+      size: rack.size,
+      notes: rack.notes
     }
   end
 end

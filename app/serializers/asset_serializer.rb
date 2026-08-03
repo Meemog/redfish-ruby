@@ -8,17 +8,17 @@ class AssetSerializer
 
   def as_json
     {
-      id: @asset.ID,
-      rackId: @asset.RackId,
-      name: @asset.Name,
-      size: @asset.Size,
-      position: @asset.Position,
+      id: @asset.id,
+      rackId: @asset.rackId,
+      name: @asset.name,
+      size: @asset.size,
+      position: @asset.position,
 
       data: @asset.paths.map do |path|
         {
-          path: path.Path,
-          name: path.Name,
-          value: extract_value(path.Path, @json_history&.RawJson),
+          path: path.path,
+          name: path.name,
+          value: extract_value(path.path, @json_history&.rawJson),
           id: path.id
         }
       end,
@@ -38,9 +38,9 @@ class AssetSerializer
     return 0 unless @json_history
 
     @asset.json_histories
-         .order(UploadDate: :desc)
-         .pluck(:ID)
-         .index(@json_history.ID)
+         .order(uploadDate: :desc)
+         .pluck(:id)
+         .index(@json_history.id)
   end
 
   def extract_value(path, json_string)

@@ -20,7 +20,7 @@ class AssetsController < ApplicationController
 
     history =
       asset.json_histories
-          .order(UploadDate: :desc)
+          .order(uploadDate: :desc)
           .offset(index)
           .first
 
@@ -29,10 +29,10 @@ class AssetsController < ApplicationController
 
   def create
     asset = Asset.new(
-      RackId: params[:rackId],
-      Name: params[:name],
-      Size: params[:size],
-      Position: params[:position]
+      rackId: params[:rackId],
+      name: params[:name],
+      size: params[:size],
+      position: params[:position]
     )
 
     ActiveRecord::Base.transaction do
@@ -40,15 +40,15 @@ class AssetsController < ApplicationController
 
       params[:data].each do |item|
         asset.paths.create!(
-          Path: item[:path],
-          Name: item[:name]
+          path: item[:path],
+          name: item[:name]
         )
       end
 
       asset.json_histories.create!(
-        RawJson: params[:json][:text],
-        Filename: params[:json][:filename],
-        UploadDate: Time.now
+        rawJson: params[:json][:text],
+        filename: params[:json][:filename],
+        uploadDate: Time.now
       )
     end
 
@@ -60,9 +60,9 @@ class AssetsController < ApplicationController
     asset = Asset.find(params[:id])
 
     history = asset.json_histories.create!(
-      RawJson: params[:json][:text],
-      Filename: params[:json][:filename],
-      UploadDate: Time.now
+      rawJson: params[:json][:text],
+      filename: params[:json][:filename],
+      uploadDate: Time.now
     )
 
     render json: AssetSerializer.new(asset, history).as_json
@@ -87,7 +87,6 @@ class AssetsController < ApplicationController
   end
 
 
-
   private
 
 
@@ -97,13 +96,6 @@ class AssetsController < ApplicationController
       :name,
       :size,
       :position
-    ).to_h.transform_keys do |key|
-      {
-        "rackId" => "RackId",
-        "name" => "Name",
-        "size" => "Size",
-        "position" => "Position"
-      }[key]
-    end.compact
+    )
   end
 end

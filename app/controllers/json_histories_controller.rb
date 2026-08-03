@@ -1,13 +1,13 @@
 class JsonHistoriesController < ApplicationController
   def index
-    histories = JsonHistory.where(AssetId: params[:id])
+    histories = JsonHistory.where(assetId: params[:id])
 
     render json: HistorySerializer.collection(histories)
   end
 
   def show
     history = JsonHistory.find_by(
-      AssetId: params[:id],
+      assetId: params[:id],
       id: params[:history_id]
     )
 
@@ -16,7 +16,7 @@ class JsonHistoriesController < ApplicationController
 
   def destroy
     history = JsonHistory.find_by(
-      AssetId: params[:id],
+      assetId: params[:id],
       id: params[:history_id]
     )
 

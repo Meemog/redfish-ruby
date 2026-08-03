@@ -1,7 +1,7 @@
 class JsonHistory < ApplicationRecord
   self.table_name = "JsonHistory"
-  self.primary_key = "ID"
+  self.primary_key = "id"
 
   belongs_to :asset,
-             foreign_key: "AssetId"
+             foreign_key: "assetId"
 end
