@@ -1,9 +1,16 @@
 class RacksController < ApplicationController
   include Authenticatable
+  include Authorizable
+
+  before_action -> { require_permission("racks.read") },
+                only: [ :index, :show ]
+
+  before_action -> { require_permission("racks.write") },
+                only: [ :create, :update, :destroy ]
+
   def index
     render json: RackRecord.all.map { |rack| serialize_rack(rack) }
   end
-
 
   def show
     rack = RackRecord.find(params[:id])

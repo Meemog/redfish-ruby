@@ -1,5 +1,12 @@
 class TemplatesController < ApplicationController
   include Authenticatable
+  include Authorizable
+
+  before_action -> { require_permission("templates.read") },
+                only: [ :index, :show ]
+
+  before_action -> { require_permission("templates.write") },
+                only: [ :create, :update, :destroy ]
 
   before_action :set_template, only: [ :show, :update, :destroy ]
   def index

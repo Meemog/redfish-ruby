@@ -1,5 +1,12 @@
 class JsonHistoriesController < ApplicationController
   include Authenticatable
+  include Authorizable
+
+  before_action -> { require_permission("history.read") },
+                only: [ :index, :show ]
+
+  before_action -> { require_permission("history.write") },
+                only: [ :destroy ]
 
   def index
     histories = JsonHistory.where(assetId: params[:id])

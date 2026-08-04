@@ -1,5 +1,12 @@
 class PathsController < ApplicationController
   include Authenticatable
+  include Authorizable
+
+  before_action -> { require_permission("paths.read") },
+                only: [ :index, :show ]
+
+  before_action -> { require_permission("paths.write") },
+                only: [ :create, :update, :destroy ]
 
   before_action :set_asset
   before_action :set_path, only: [ :show, :update, :destroy ]

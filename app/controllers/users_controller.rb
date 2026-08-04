@@ -1,7 +1,11 @@
 class UsersController < ApplicationController
   include Authenticatable
+  include Authorizable
 
   skip_before_action :authenticate_request, only: [ :login ]
+
+  before_action -> { require_permission("users.write") },
+                only: [ :create, :destroy ]
 
   def create
     user = User.new(user_params.except(:password))

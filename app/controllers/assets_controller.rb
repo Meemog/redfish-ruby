@@ -2,6 +2,13 @@ require "json"
 
 class AssetsController < ApplicationController
   include Authenticatable
+  include Authorizable
+
+  before_action -> { require_permission("assets.read") },
+                only: [ :index, :show ]
+
+  before_action -> { require_permission("assets.write") },
+                only: [ :create, :update, :destroy ]
 
   def index
     render json: Asset.all.map { |asset| AssetSerializer.new(asset).as_json }

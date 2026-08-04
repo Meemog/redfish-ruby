@@ -47,7 +47,7 @@ Rails.application.routes.draw do
       to: "users#login",
       as: :user_login
 
-    resources :racks
+    resources :racks, only: [ :index, :show, :create, :update, :destroy ]
   end
 
   # Defines the root path route ("/")

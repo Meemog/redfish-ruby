@@ -1,5 +1,12 @@
 class TemplatePathsController < ApplicationController
   include Authenticatable
+  include Authorizable
+
+  before_action -> { require_permission("template_paths.read") },
+                only: [ :index, :show ]
+
+  before_action -> { require_permission("template_paths.write") },
+                only: [ :create, :update, :destroy ]
 
   before_action :set_template
   before_action :set_template_path, only: [ :show, :update, :destroy ]
