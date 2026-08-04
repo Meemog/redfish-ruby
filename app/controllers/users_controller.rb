@@ -30,14 +30,12 @@ class UsersController < ApplicationController
     user = User.find_by(username: params[:username])
 
     if user&.authenticate(params[:password])
-      token = JwtService.encode({ user_id: user.id })
+      token, exp = JwtService.encode({ user_id: user.id })
 
       render json: {
         token: token,
-        user: {
-          id: user.id,
-          username: user.username
-        }
+        issuedAt: Time.now,
+        expiresAt: exp
       }
     else
       render json: { error: "Invalid credentials" }, status: :unauthorized

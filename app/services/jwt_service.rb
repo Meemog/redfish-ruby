@@ -4,7 +4,7 @@ class JwtService
   def self.encode(payload, exp = 24.hours.from_now)
     payload[:exp] = exp.to_i
 
-    JWT.encode(payload, SECRET, "HS256")
+    return JWT.encode(payload, SECRET, "HS256"), exp
   end
 
   def self.decode(token)
