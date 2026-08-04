@@ -57,12 +57,9 @@ class AssetSerializer
     parts.each do |part|
       return nil if current.nil?
 
-      if part =~ /^(.+)\[(\d+)\]$/
-        key = $1
-        index = $2.to_i
-
-        current = current[key]
-        current = current[index] if current
+      if part =~ /^\[(\d+)\]$/
+        index = $1.to_i
+        current = current[index]
       else
         current = current[part]
       end
