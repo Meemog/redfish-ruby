@@ -11,17 +11,19 @@ Rails.application.routes.draw do
 
   scope "/api/v1" do
     resources :assets, only: [ :index, :show, :create, :update, :destroy ] do
-      resources :paths, only: [ :index, :show, :create, :update, :destroy ]
+      resources :asset_paths,
+      path: "paths",
+      only: [ :index, :show, :create, :update, :destroy ]
     end
 
     get "assets/:id/history",
-    to: "json_histories#index"
+    to: "asset_jsons#index"
 
     get "assets/:id/history/:history_id",
-        to: "json_histories#show"
+        to: "asset_jsons#show"
 
     delete "assets/:id/history/:history_id",
-        to: "json_histories#destroy"
+        to: "asset_jsons#destroy"
 
     post "assets/:id",
         to: "assets#create_json",

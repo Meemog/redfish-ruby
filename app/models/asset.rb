@@ -5,15 +5,15 @@ class Asset < ApplicationRecord
   belongs_to :rack_record,
              foreign_key: "rackId"
 
-  has_many :paths,
+  has_many :asset_paths,
            foreign_key: "assetId",
            dependent: :destroy
 
-  has_many :json_histories,
+  has_many :asset_jsons,
            foreign_key: "assetId",
            dependent: :destroy
 
   def latest_json
-    json_histories.order(UploadDate: :desc).first
+    asset_jsons.order(UploadDate: :desc).first
   end
 end

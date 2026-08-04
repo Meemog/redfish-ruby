@@ -1,5 +1,5 @@
-class JsonHistory < ApplicationRecord
-  self.table_name = "JsonHistory"
+class AssetPath < ApplicationRecord
+  self.table_name = "AssetPath"
   self.primary_key = "id"
 
   belongs_to :asset,

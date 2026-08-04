@@ -14,7 +14,7 @@ class AssetSerializer
       size: @asset.size,
       position: @asset.position,
 
-      data: @asset.paths.map do |path|
+      data: @asset.asset_paths.map do |path|
         {
           path: path.path,
           name: path.name,
@@ -27,7 +27,7 @@ class AssetSerializer
 
       pagination: {
         position: json_history_position,
-        total: @asset.json_histories.count
+        total: @asset.asset_jsons.count
       }
     }
   end
@@ -37,7 +37,7 @@ class AssetSerializer
   def json_history_position
     return 0 unless @json_history
 
-    @asset.json_histories
+    @asset.asset_jsons
          .order(uploadDate: :desc)
          .pluck(:id)
          .index(@json_history.id)

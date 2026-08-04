@@ -28,7 +28,7 @@ class AssetsController < ApplicationController
     index = params[:index].to_i
 
     history =
-      asset.json_histories
+      asset.asset_jsons
           .order(uploadDate: :desc)
           .offset(index)
           .first
@@ -48,13 +48,13 @@ class AssetsController < ApplicationController
       asset.save!
 
       params[:data].each do |item|
-        asset.paths.create!(
+        asset.asset_paths.create!(
           path: item[:path],
           name: item[:name]
         )
       end
 
-      asset.json_histories.create!(
+      asset.asset_jsons.create!(
         rawJson: params[:json][:text],
         filename: params[:json][:filename],
         uploadDate: Time.now
@@ -68,7 +68,7 @@ class AssetsController < ApplicationController
   def create_json
     asset = Asset.find(params[:id])
 
-    history = asset.json_histories.create!(
+    history = asset.asset_jsons.create!(
       rawJson: params[:json][:text],
       filename: params[:json][:filename],
       uploadDate: Time.now

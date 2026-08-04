@@ -12,7 +12,7 @@ class PathsController < ApplicationController
   before_action :set_path, only: [ :show, :update, :destroy ]
 
   def index
-    render json: @asset.paths
+    render json: @asset.asset_paths
   end
 
   def show
@@ -20,7 +20,7 @@ class PathsController < ApplicationController
   end
 
   def create
-    path = @asset.paths.build(path_params)
+    path = @asset.asset_paths.build(path_params)
 
     if path.save
       render json: path, status: :created
@@ -49,7 +49,7 @@ class PathsController < ApplicationController
   end
 
   def set_path
-    @path = @asset.paths.find(params[:id])
+    @path = @asset.asset_paths.find(params[:id])
   end
 
   def path_params
