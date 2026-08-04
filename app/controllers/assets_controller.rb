@@ -47,7 +47,7 @@ class AssetsController < ApplicationController
     ActiveRecord::Base.transaction do
       asset.save!
 
-      params[:data].each do |item|
+      params[:paths].each do |item|
         asset.asset_paths.create!(
           path: item[:path],
           name: item[:name]

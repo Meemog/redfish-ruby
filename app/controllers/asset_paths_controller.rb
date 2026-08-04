@@ -20,12 +20,21 @@ class PathsController < ApplicationController
   end
 
   def create
-    path = @asset.asset_paths.build(path_params)
+    paths = paths_params.map do |attrs|
+      @asset.asset_paths.build(attrs)
+    end
 
-    if path.save
-      render json: path, status: :created
+    if paths.all?(&:save)
+      render json: paths, status: :created
     else
-      render json: path.errors, status: :unprocessable_entity
+      errors = paths.filter_map do |path|
+        {
+          attributes: path.attributes,
+          errors: path.errors.full_messages
+        } unless path.persisted?
+      end
+
+      render json: { errors: errors }, status: :unprocessable_entity
     end
   end
 
@@ -44,6 +53,7 @@ class PathsController < ApplicationController
 
   private
 
+
   def set_asset
     @asset = Asset.find(params[:asset_id])
   end
@@ -53,8 +63,12 @@ class PathsController < ApplicationController
   end
 
   def path_params
-    params.permit(:path, :name).transform_keys do |key|
-      key.to_s.capitalize
+    params.permit(:path, :name)
+  end
+
+  def paths_params
+    params.require(:paths).map do |path|
+      path.permit(:path, :name)
     end
   end
 end

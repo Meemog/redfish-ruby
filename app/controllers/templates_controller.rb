@@ -22,11 +22,20 @@ class TemplatesController < ApplicationController
   def create
     template = Template.new(template_params)
 
-    if template.save
-      render json: TemplateSerializer.call(template), status: :created
-    else
-      render json: template.errors, status: :unprocessable_entity
+    ActiveRecord::Base.transaction do
+      template.save!
+
+      params[:paths].each do |item|
+        template.template_paths.create!(
+          path: item[:path],
+          name: item[:name]
+        )
+      end
     end
+
+    render json: TemplateSerializer.call(template), status: :created
+  rescue ActiveRecord::RecordInvalid => e
+    render json: { errors: e.record.errors.full_messages }, status: :unprocessable_entity
   end
 
   def update

@@ -22,13 +22,17 @@ class TemplatePathsController < ApplicationController
   end
 
   def create
-    template_path = @template.template_paths.new(template_path_params)
+    template_paths = []
 
-    if template_path.save
-      render json: TemplatePathSerializer.call(template_path), status: :created
-    else
-      render json: template_path.errors, status: :unprocessable_entity
+    ActiveRecord::Base.transaction do
+      template_paths_params.each do |attrs|
+        template_paths << @template.template_paths.create!(attrs)
+      end
     end
+
+    render json: template_paths.map { |path| TemplatePathSerializer.call(path) }, status: :created
+  rescue ActiveRecord::RecordInvalid => e
+    render json: { errors: e.record.errors.full_messages }, status: :unprocessable_entity
   end
 
   def update
@@ -56,5 +60,11 @@ class TemplatePathsController < ApplicationController
 
   def template_path_params
     params.permit(:path, :name)
+  end
+
+  def template_paths_params
+    params.require(:paths).map do |path|
+      path.permit(:path, :name)
+    end
   end
 end
