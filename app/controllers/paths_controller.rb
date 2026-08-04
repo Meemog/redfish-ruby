@@ -1,4 +1,6 @@
 class PathsController < ApplicationController
+  include Authenticatable
+
   before_action :set_asset
   before_action :set_path, only: [ :show, :update, :destroy ]
 

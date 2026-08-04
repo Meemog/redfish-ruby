@@ -1,4 +1,6 @@
 class TemplatePathsController < ApplicationController
+  include Authenticatable
+
   before_action :set_template
   before_action :set_template_path, only: [ :show, :update, :destroy ]
 

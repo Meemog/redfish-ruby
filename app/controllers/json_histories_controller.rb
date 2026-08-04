@@ -1,4 +1,6 @@
 class JsonHistoriesController < ApplicationController
+  include Authenticatable
+
   def index
     histories = JsonHistory.where(assetId: params[:id])
 

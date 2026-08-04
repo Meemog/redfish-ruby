@@ -1,6 +1,8 @@
 require "json"
 
 class AssetsController < ApplicationController
+  include Authenticatable
+
   def index
     render json: Asset.all.map { |asset| AssetSerializer.new(asset).as_json }
   end

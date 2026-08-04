@@ -1,4 +1,6 @@
 class TemplatesController < ApplicationController
+  include Authenticatable
+
   before_action :set_template, only: [ :show, :update, :destroy ]
   def index
     render json: Template.all.map { |template|

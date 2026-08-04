@@ -41,6 +41,11 @@ Rails.application.routes.draw do
       only: [ :index, :show, :create, :update, :destroy ]
     end
 
+    resources :users, only: [ :create, :destroy ]
+
+    post "users/login",
+      to: "users#login",
+      as: :user_login
 
     resources :racks
   end

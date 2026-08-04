@@ -1,4 +1,5 @@
 class RacksController < ApplicationController
+  include Authenticatable
   def index
     render json: RackRecord.all.map { |rack| serialize_rack(rack) }
   end
