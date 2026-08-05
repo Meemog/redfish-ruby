@@ -48,8 +48,23 @@ user_role.permissions = Permission.where(
 )
 
 # Create test users
-User.find_or_create_by!(username: "admin") do |user|
+User.find_or_create_by!(username: "oscar") do |user|
   user.passwordHash = Digest::SHA256.hexdigest("otter")
+  user.role = admin_role
+end
+
+User.find_or_create_by!(username: "arun") do |user|
+  user.passwordHash = Digest::SHA256.hexdigest("panther")
+  user.role = admin_role
+end
+
+User.find_or_create_by!(username: "alex") do |user|
+  user.passwordHash = Digest::SHA256.hexdigest("seal")
+  user.role = admin_role
+end
+
+User.find_or_create_by!(username: "calum") do |user|
+  user.passwordHash = Digest::SHA256.hexdigest("wolf")
   user.role = admin_role
 end
 

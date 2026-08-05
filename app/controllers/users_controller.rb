@@ -49,6 +49,8 @@ class UsersController < ApplicationController
 
   def logout
     @current_user.logout
+
+    head :no_content
   end
 
   private

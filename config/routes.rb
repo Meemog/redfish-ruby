@@ -49,6 +49,10 @@ Rails.application.routes.draw do
       to: "users#login",
       as: :user_login
 
+    post "users/logout",
+      to: "users#logout",
+      as: :user_logout
+
     post "users/refresh",
       to: "users#refresh",
       as: :user_refresh
