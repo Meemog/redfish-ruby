@@ -4,4 +4,10 @@ class RefreshToken < ApplicationRecord
 
   belongs_to :user,
               foreign_key: "userId"
+
+  validates :user, presence: true
+
+  validates :tokenHash,
+            length: { is: 64 },
+            allow_nil: true
 end

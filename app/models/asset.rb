@@ -16,4 +16,19 @@ class Asset < ApplicationRecord
   def latest_json
     asset_jsons.order(UploadDate: :desc).first
   end
+
+  validates :rack_record, presence: true
+
+  validates :name,
+            presence: true,
+            uniqueness: true,
+            length: { maximum: 255 }
+
+  validates :size,
+            numericality: { only_integer: true },
+            allow_nil: true
+
+  validates :position,
+            numericality: { only_integer: true },
+            allow_nil: true
 end

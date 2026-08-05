@@ -5,4 +5,9 @@ class Template < ApplicationRecord
   has_many :template_paths,
             foreign_key: "templateId",
             dependent: :destroy
+
+  validates :name,
+            presence: true,
+            uniqueness: true,
+            length: { maximum: 255 }
 end

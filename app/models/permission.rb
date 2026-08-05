@@ -8,4 +8,9 @@ class Permission < ApplicationRecord
 
   has_many :roles,
            through: :role_permissions
+
+  validates :name,
+            presence: true,
+            uniqueness: true,
+            length: { maximum: 255 }
 end

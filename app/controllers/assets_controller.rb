@@ -37,15 +37,15 @@ class AssetsController < ApplicationController
   end
 
   def create
-    asset = Asset.new(
-      rackId: params[:rackId],
-      name: params[:name],
-      size: params[:size],
-      position: params[:position]
-    )
+    asset = nil
 
     ActiveRecord::Base.transaction do
-      asset.save!
+      asset = Asset.create!(
+        rackId: params[:rackId],
+        name: params[:name],
+        size: params[:size],
+        position: params[:position]
+      )
 
       params[:paths].each do |item|
         asset.asset_paths.create!(
@@ -57,7 +57,7 @@ class AssetsController < ApplicationController
       asset.asset_jsons.create!(
         rawJson: params[:json][:text],
         filename: params[:json][:filename],
-        uploadDate: Time.now
+        uploadDate: Time.current
       )
     end
 

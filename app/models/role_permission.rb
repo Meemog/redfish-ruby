@@ -7,4 +7,10 @@ class RolePermission < ApplicationRecord
 
   belongs_to :permission,
              foreign_key: "permissionId"
+
+  validates :role, presence: true
+  validates :permission, presence: true
+
+  validates :permissionId,
+            uniqueness: { scope: :roleId }
 end

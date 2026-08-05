@@ -14,7 +14,7 @@ class AssetSerializer
       size: @asset.size,
       position: @asset.position,
 
-      data: @asset.asset_paths.map do |path|
+      paths: @asset.asset_paths.map do |path|
         {
           path: path.path,
           name: path.name,

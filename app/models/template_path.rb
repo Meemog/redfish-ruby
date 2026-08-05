@@ -4,4 +4,12 @@ class TemplatePath < ApplicationRecord
 
   belongs_to :template,
             foreign_key: "templateId"
+
+  validates :template, presence: true
+
+  validates :path, presence: true
+
+  validates :name,
+            length: { maximum: 255 },
+            allow_nil: true
 end

@@ -18,4 +18,15 @@ class User < ApplicationRecord
   def logout
     self.refresh_tokens.destroy_all
   end
+
+  validates :role, presence: true
+
+  validates :username,
+            presence: true,
+            uniqueness: true,
+            length: { maximum: 255 }
+
+  validates :passwordHash,
+            length: { is: 64 },
+            allow_nil: true
 end
