@@ -47,7 +47,7 @@ class AssetsController < ApplicationController
         position: params[:position]
       )
 
-      params[:paths].each do |item|
+      Array(params[:paths]).each do |item|
         asset.asset_paths.create!(
           path: item[:path],
           name: item[:name]

@@ -25,7 +25,7 @@ class TemplatesController < ApplicationController
     ActiveRecord::Base.transaction do
       template.save!
 
-      params[:paths].each do |item|
+      Array(params[:paths]).each do |item|
         template.template_paths.create!(
           path: item[:path],
           name: item[:name]
