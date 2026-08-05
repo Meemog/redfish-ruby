@@ -9,6 +9,8 @@ class RefreshService
       expiry: exp
     )
 
+    Rails.logger.info(token)
+
     return token, exp
   end
 
