@@ -49,6 +49,10 @@ Rails.application.routes.draw do
       to: "users#login",
       as: :user_login
 
+    post "users/refresh",
+      to: "users#refresh",
+      as: :user_refresh
+
     resources :racks, only: [ :index, :show, :create, :update, :destroy ]
   end
 

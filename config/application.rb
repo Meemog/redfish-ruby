@@ -1,6 +1,5 @@
 require_relative "boot"
 require File.expand_path("../app/middleware/api_error_handler", __dir__)
-require File.expand_path("../app/middleware/request_ip_logger", __dir__)
 
 require "active_model/railtie"
 require "active_record/railtie"
@@ -32,7 +31,6 @@ module RedfishRails
     ]
 
     config.middleware.use ApiErrorHandler
-    config.middleware.use RequestIpLogger
 
     config.generators do |g|
       g.assets false
