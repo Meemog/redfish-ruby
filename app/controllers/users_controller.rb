@@ -37,7 +37,7 @@ class UsersController < ApplicationController
   end
 
   def refresh
-    user = RefreshService.authenticate(params[:token])
+    user = RefreshService.authenticate(params[:refresh])
 
     if user
       user.refresh_tokens.destroy_all
