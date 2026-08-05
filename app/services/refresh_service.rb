@@ -9,7 +9,7 @@ class RefreshService
       expiry: exp
     )
 
-    Rails.logger.info(token)
+    Rails.logger.info("Generated refresh token: #{token}")
 
     return token, exp
   end

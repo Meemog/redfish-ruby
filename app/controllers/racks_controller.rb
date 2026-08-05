@@ -52,7 +52,20 @@ class RacksController < ApplicationController
   def all_assets
     rack = RackRecord.find(params[:id])
 
-    render json: rack.assets.map { |asset| AssetSerializer.new(asset).as_json }
+    assets = rack.assets
+
+    page = (params[:page].presence || 1).to_i
+    limit = (params[:limit].presence || 25).to_i
+
+    assets = assets.offset((page - 1) * limit).limit(limit)
+
+    render json: {
+      page: page,
+      limit: limit,
+      total: assets.count,
+      totalPages: Asset.count.div(limit),
+      assets: assets.map { |asset| AssetSerializer.new(asset).as_json }
+    }
   end
 
 

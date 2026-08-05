@@ -23,12 +23,10 @@ class AssetSerializer
         }
       end,
 
-      json: HistorySerializer.call(@json_history),
-
-      pagination: {
+      json: HistorySerializer.call(@json_history).merge(
         position: json_history_position,
         total: @asset.asset_jsons.count
-      }
+      )
     }
   end
 

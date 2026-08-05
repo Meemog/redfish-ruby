@@ -11,9 +11,23 @@ class AssetsController < ApplicationController
                 only: [ :create, :update, :destroy ]
 
   def index
-    render json: Asset.all.map { |asset| AssetSerializer.new(asset).as_json }
-  end
+    assets = Asset.all
 
+    if params[:page].present? && params[:limit].present?
+      page = params[:page].to_i
+      limit = params[:limit].to_i
+
+      assets = assets.offset((page - 1) * limit).limit(limit)
+    end
+
+    render json: {
+      page: page,
+      limit: limit,
+      total: assets.count,
+      totalPages: Asset.count.div(limit),
+      assets: assets.map { |asset| AssetSerializer.new(asset).as_json }
+    }
+  end
 
   def show
     asset = Asset.find(params[:id])

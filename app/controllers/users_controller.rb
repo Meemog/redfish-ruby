@@ -40,7 +40,6 @@ class UsersController < ApplicationController
     user = RefreshService.authenticate(params[:refresh])
 
     if user
-      user.refresh_tokens.destroy_all
       render json: create_auth_response(user)
     else
       render json: { error: "Invalid credentials" }, status: :unauthorized
@@ -56,6 +55,8 @@ class UsersController < ApplicationController
   private
 
   def create_auth_response(user)
+      user.refresh_tokens.destroy_all
+
       token, exp = JwtService.encode({ user_id: user.id })
       refresh_token, refresh_exp = RefreshService.generate(user)
 
